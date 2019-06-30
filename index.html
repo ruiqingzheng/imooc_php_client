@@ -27,11 +27,37 @@
     <h5>当前时间： {{timeString}}</h5>
 
 
+    <section class="container grey-text white " style="padding: 20px">
+
+      <h4 class="center teal-text"> 添加商品</h4>
+      <form @submit="handleSubmit">
+
+        <label for="product_name">名称</label>
+        <input type="text" name="product_name" placeholder="名称" v-model="product.product_name">
+
+
+        <label for="product_price">价格</label>
+        <input type="text" name="product_price" placeholder="价格" v-model="product.product_price">
+
+
+        <label for="product_image">图片</label>
+        <input type="text" name="product_image" placeholder="图片"
+               v-model="product.product_image">
+
+
+        <div class="center">
+          <input type="submit" name="submit" value="提交" class="btn brand z-depth-0">
+
+        </div>
+      </form>
+    </section>
+
+
     <button class="btn" @click="getProducts">获取数据</button>
 
     <div class="row">
       <div class="col s6 m4" v-for="product, index in products" :key="index">
-        <div class="card z-depth-0">git l
+        <div class="card z-depth-0">
           <img :src="product.product_image">
           <div class="card-content center">
             <h6>商品名称： {{product.product_name}}</h6>
@@ -66,7 +92,13 @@
       message: "hello Vue",
       toggle: false,
       timeString: '',
-      products: {}
+      products: {},
+      product: {
+        product_name: '',
+        product_price: '',
+        product_image: 'https://www.62icon.com/client/assets/img/index/custom.svg'
+      }
+
 
     },
     methods: {
@@ -84,6 +116,20 @@
         }).catch(function (err) {
           console.log(err)
         });
+      },
+
+      handleSubmit: function (e) {
+        let that = this;
+        e.preventDefault();
+        axios.post('/api/product/create.php', this.product).then(function (response) {
+
+          console.log(response);
+          // 如果提交成功， 那么重新获取数据
+          that.getProducts();
+
+        }).catch(function (error) {
+          console.log("post error:", error);
+        });
       }
     },
 
@@ -93,7 +139,7 @@
         that.timeString = new Date().toLocaleTimeString();
       }, 1000);
 
-      // this.getProducts();
+      this.getProducts();
     }
 
   })
