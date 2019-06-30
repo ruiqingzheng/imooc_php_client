@@ -30,8 +30,8 @@
     <button class="btn" @click="getProducts">获取数据</button>
 
     <div class="row">
-      <div class="col s6 m4" v-for="product, index in products" :key="product">
-        <div class="card z-depth-0">
+      <div class="col s6 m4" v-for="product, index in products" :key="index">
+        <div class="card z-depth-0">git l
           <img :src="product.product_image">
           <div class="card-content center">
             <h6>商品名称： {{product.product_name}}</h6>
